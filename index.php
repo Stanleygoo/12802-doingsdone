@@ -59,7 +59,17 @@ function tasks_filter($tasks, $show_complete_tasks) {
 
 // задачи, отфильтрованные для показа
 $visible_tasks = tasks_filter($tasks, $show_complete_tasks);
+
+// функция для подсчета числа задач проекта
+function get_tasks_count($tasks, $project_id) {
+    $project_tasks = array_filter($tasks, function($task) use ($project_id) {
+        return $task['project'] === $project_id;
+    });
+
+    return count($project_tasks);
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -107,7 +117,7 @@ $visible_tasks = tasks_filter($tasks, $show_complete_tasks);
                         <?php foreach ($projects as $project_id => $project_name): ?>
                         <li class="main-navigation__list-item">
                             <a class="main-navigation__list-item-link" href="#"><?= $project_name ?></a>
-                            <span class="main-navigation__list-item-count">0</span>
+                            <span class="main-navigation__list-item-count"><?= get_tasks_count($tasks, $project_id)?></span>
                         </li>
                         <?php endforeach ?>
                     </ul>
