@@ -24,3 +24,22 @@ function get_tasks_count($tasks, $project_id) {
 
     return count($project_tasks);
 }
+
+// функция для определения, что до завершения задачи осталось меньше 24 часов
+function is_important_task($task) {
+    $deadline = strtotime($task['deadline']);
+    $hours_in_day = 24;
+    $seconds_in_hour = 3600;
+    $current_time = time();
+    return $deadline
+        ? floor(($deadline - $current_time) / $seconds_in_hour) <= $hours_in_day
+        : false;
+}
+
+// функция для добавления информации о важности задачи
+function fill_important_task($tasks) {
+    return array_map(function($task) {
+        $task['is_important'] = is_important_task($task);
+        return $task;
+    }, $tasks);
+}

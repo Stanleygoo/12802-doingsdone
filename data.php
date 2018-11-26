@@ -56,7 +56,7 @@ $tasks = [
                 <li>3</li>
             </ul>
         ',
-        'deadline' => 'Нет',
+        'deadline' => '27.11.2018',
         'project' => 2,
         'is_done' => true
     ]

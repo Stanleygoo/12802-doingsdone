@@ -10,6 +10,7 @@ $show_complete_tasks = rand(0, 1);
 
 // задачи, отфильтрованные для показа
 $visible_tasks = tasks_filter($tasks, $show_complete_tasks);
+$visible_tasks = fill_important_task($visible_tasks);
 
 $index_content = include_template(VIEWS_PATH . 'index.php', [
     'show_complete_tasks' => $show_complete_tasks,
