@@ -1,4 +1,9 @@
-<tr class="tasks__item task <?php if ($task['is_done']): ?>task--completed<?php endif; ?>">
+<tr class="
+    tasks__item
+    task
+    <?php if($task['is_done']):?>task--completed<?php endif ?>
+    <?php if($task['is_important']):?>task--important<?php endif ?>
+">
     <td class="task__select">
         <label class="checkbox task__checkbox">
             <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
