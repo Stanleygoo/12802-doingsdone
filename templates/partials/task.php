@@ -8,14 +8,18 @@
         <label class="checkbox task__checkbox">
             <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
             <span class="checkbox__text">
-                <?= strip_tags($task['text'], '<i><b><ul><ol><li><br><h1><h2><h3><h4><h5><h6><p>'); ?>
+                <?= strip_tags($task['name'], '<i><b><ul><ol><li><br><h1><h2><h3><h4><h5><h6><p>'); ?>
             </span>
         </label>
     </td>
 
     <td class="task__file">
-        <a class="download-link" href="#">Home.psd</a>
+        <?php if ($task['file']): ?>
+            <a class="download-link" href="#"><?= $task['file']; ?></a>
+        <?php endif ?>
     </td>
 
-    <td class="task__date"><?= $task['deadline'] ?></td>
+    <td class="task__date">
+        <?= date_format(date_create($task['deadline']), 'd.m.Y') ?>
+    </td>
 </tr>
