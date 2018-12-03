@@ -19,7 +19,7 @@ function tasks_filter($tasks, $show_complete_tasks) {
 // функция для подсчета числа задач проекта
 function get_tasks_count($tasks, $project_id) {
     $project_tasks = array_filter($tasks, function($task) use ($project_id) {
-        return $task['project'] === $project_id;
+        return $task['project_id'] === $project_id;
     });
 
     return count($project_tasks);
@@ -42,4 +42,18 @@ function fill_important_task($tasks) {
         $task['is_important'] = is_important_task($task);
         return $task;
     }, $tasks);
+}
+
+// функция для добавления информации о завершенности задачи
+function fill_done_task($tasks) {
+    return array_map(function($task) {
+        $task['is_done'] = $task['status'] === '1';
+        return $task;
+    }, $tasks);
+}
+
+function render_error($error) {
+    echo "
+        <pre><code>$error</code></pre>
+    ";
 }

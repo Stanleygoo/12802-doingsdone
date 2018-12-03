@@ -1,63 +1,31 @@
 <?php
 
-// данные для проектов
-$projects = [
-    1 => 'Входящие',
-    2 => 'Учеба',
-    3 => 'Работа',
-    4 => 'Домашние дела',
-    5 => 'Авто'
-];
+// получение проектов для данного юзера
+function getProjectsOfUser($conn, $user_id) {
+    $projects_list_sql = "
+        SELECT `id`, `name`
+        FROM `projects`
+        WHERE `author_id` = $user_id
+    ";
 
-// данные для задач
-$tasks = [
-    [
-        'text' => 'Собеседование в IT компании',
-        'deadline' => '01.12.2018',
-        'project' => 3,
-        'is_done' => false
-    ],
-    [
-        'text' => 'Выполнить тестовое задание',
-        'deadline' => '25.12.2018',
-        'project' => 3,
-        'is_done' => false
-    ],
-    [
-        'text' => 'Сделать задание первого раздела',
-        'deadline' => '21.12.2018',
-        'project' => 2,
-        'is_done' => true
-    ],
-    [
-        'text' => 'Встреча с другом',
-        'deadline' => '22.12.2018',
-        'project' => 1,
-        'is_done' => false
-    ],
-    [
-        'text' => 'Купить корм для кота',
-        'deadline' => 'Нет',
-        'project' => 4,
-        'is_done' => false
-    ],
-    [
-        'text' => 'Заказать пиццу',
-        'deadline' => 'Нет',
-        'project' => 4,
-        'is_done' => false
-    ],
-    [
-        'text' => '
-            <b>Протестировать защиту от <i>xss</i>-атак</b>
-            <ul>
-                <li><script>alert("alert")</script></li>
-                <li>2</li>
-                <li>3</li>
-            </ul>
-        ',
-        'deadline' => '27.11.2018',
-        'project' => 2,
-        'is_done' => true
-    ]
-];
+    $projects_query_result = mysqli_query($conn, $projects_list_sql);
+
+    return $projects_query_result
+        ? mysqli_fetch_all($projects_query_result, MYSQLI_ASSOC)
+        : false;
+}
+
+// получение задач для данного юзера
+function getTasksOfUser($conn, $user_id) {
+    $tasks_list_sql = "
+        SELECT *
+        FROM `tasks`
+        WHERE `author_id` = $user_id
+    ";
+
+    $tasks_query_result = mysqli_query($conn, $tasks_list_sql);
+
+    return $tasks_query_result
+        ? mysqli_fetch_all($tasks_query_result, MYSQLI_ASSOC)
+        : false;
+}
