@@ -253,6 +253,7 @@ a:focus {
 .content {
   display: flex;
   margin-bottom: 120px;
+  padding-bottom: 94px;
 }
 
 .content__side {

@@ -10,6 +10,15 @@ function include_template($name, $data) {
     return ob_get_clean();
 }
 
+function fill_projects_data($projects, $active_project_id, $query_params, $pathname) {
+    return array_map(function($project) use($active_project_id, $query_params, $pathname) {
+        $query_params['project_id'] = $project['id'];
+        $project['url'] = '/' . $pathname . '?' . http_build_query($query_params);
+        $project['is_active'] = $project['id'] === intval($active_project_id);
+        return $project;
+    }, $projects);
+}
+
 function tasks_filter($tasks, $show_complete_tasks) {
     return array_filter($tasks, function($task) use($show_complete_tasks) {
         return !($show_complete_tasks === 0 && $task['is_done']);
