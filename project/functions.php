@@ -1,28 +1,18 @@
 <?php
 
-function include_template($name, $data) {
-    if (!file_exists($name)) {
-        return '';
-    };
-    ob_start();
-    extract($data);
-    require $name;
-    return ob_get_clean();
+function fill_projects_data($projects, $active_project_id, $query_params, $pathname) {
+    return array_map(function($project) use($active_project_id, $query_params, $pathname) {
+        $query_params['project_id'] = $project['id'];
+        $project['url'] = '/' . $pathname . '?' . http_build_query($query_params);
+        $project['is_active'] = $project['id'] === (int)$active_project_id;
+        return $project;
+    }, $projects);
 }
 
 function tasks_filter($tasks, $show_complete_tasks) {
     return array_filter($tasks, function($task) use($show_complete_tasks) {
         return !($show_complete_tasks === 0 && $task['is_done']);
     });
-}
-
-// функция для подсчета числа задач проекта
-function get_tasks_count($tasks, $project_id) {
-    $project_tasks = array_filter($tasks, function($task) use ($project_id) {
-        return $task['project_id'] === $project_id;
-    });
-
-    return count($project_tasks);
 }
 
 // функция для определения, что до завершения задачи осталось меньше 24 часов
@@ -50,10 +40,4 @@ function fill_done_task($tasks) {
         $task['is_done'] = $task['status'] === '1';
         return $task;
     }, $tasks);
-}
-
-function render_error($error) {
-    echo "
-        <pre><code>$error</code></pre>
-    ";
 }

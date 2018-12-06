@@ -26,6 +26,6 @@
 
 <table class="tasks">
     <?php foreach ($visible_tasks as $task): ?>
-        <?= include_template(VIEWS_PATH . 'partials/task.php', ['task' => $task]); ?>
+        <?= view(VIEWS_PATH . 'partials/task.php', ['task' => $task]); ?>
     <?php endforeach ?>
 </table>

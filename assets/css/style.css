@@ -253,6 +253,7 @@ a:focus {
 .content {
   display: flex;
   margin-bottom: 120px;
+  padding-bottom: 94px;
 }
 
 .content__side {
@@ -274,6 +275,17 @@ a:focus {
 
   font-size: 13px;
   line-height: 1.5;
+}
+
+.content__error {
+  padding-top: 26px;
+}
+
+.content__error-message {
+  max-width: 100%;
+  overflow: auto;
+  white-space: pre-wrap;
+  line-height: 1.4;
 }
 
 .main-navigation {
@@ -781,3 +793,5 @@ a:focus {
 .welcome__text p {
   margin: 20px 0;
 }
+
+
