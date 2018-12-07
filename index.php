@@ -20,7 +20,7 @@ $show_complete_tasks = isset($_GET['show_completed'])
     : 0;
 
 $projects = getAllProjects($user['id']);
-if (!$projects) {
+if ($projects === false) {
     http_response_code(500);
     echo view(VIEWS_PATH . '/shared/error.php', [
         'status_code' => 500,

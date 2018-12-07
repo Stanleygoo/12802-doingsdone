@@ -15,7 +15,8 @@
 
     <td class="task__file">
         <?php if ($task['file']): ?>
-            <a class="download-link" href="#"><?= $task['file']; ?></a>
+            <a class="download-link" href="<?= '/uploads/' . $task['file'] ?>"
+            ><?= $task['file']; ?></a>
         <?php endif ?>
     </td>
 

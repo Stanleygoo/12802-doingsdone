@@ -4,28 +4,64 @@
     <div class="form__row">
         <label class="form__label" for="name">Название <sup>*</sup></label>
 
+        <?php
+            $error_classname = (isset($errors['name'])) ? "form__input--error" : "";
+            $value = htmlspecialchars($task['name'] ?? "");
+        ?>
         <input
-            class="form__input"
+            class="form__input <?= $error_classname; ?>"
             type="text"
             name="name"
             id="name"
-            value=""
+            value="<?= $value; ?>"
             placeholder="Введите название"
         >
+
+        <?php if(isset($errors['name'])): ?>
+            <p class="form__message"><?= $errors['name']; ?></p>
+        <?php endif ?>
     </div>
 
     <div class="form__row">
         <label class="form__label" for="project">Проект <sup>*</sup></label>
 
-        <select class="form__input form__input--select" name="project" id="project">
-            <option value=""></option>
+        <?php
+            $error_classname = (isset($errors['project'])) ? "form__input--error" : "";
+            $value = htmlspecialchars($task['project'] ?? "");
+        ?>
+
+        <select class="form__input form__input--select <?= $error_classname; ?>" name="project" id="project">
+            <?php foreach($projects as $project): ?>
+                <option
+                    value="<?= htmlentities($project['id']); ?>"
+                    <?php if($project['is_active']): ?>selected<?php endif ?>
+                >
+                    <?= htmlspecialchars($project['name']); ?>
+                </option>
+            <?php endforeach ?>
         </select>
+
+        <?php if(isset($errors['project'])): ?>
+            <p class="form__message"><?= $errors['project']; ?></p>
+        <?php endif ?>
     </div>
 
     <div class="form__row">
         <label class="form__label" for="date">Дата выполнения</label>
 
-        <input class="form__input form__input--date" type="date" name="date" id="date" value="" placeholder="Введите дату в формате ДД.ММ.ГГГГ">
+        <?php
+            $error_classname = (isset($errors['date'])) ? "form__input--error" : "";
+            $value = htmlspecialchars($task['date'] ?? "");
+        ?>
+
+        <input
+            class="form__input form__input--date <?= $error_classname; ?>"
+            type="date"
+            name="date"
+            id="date"
+            value="<?= $value; ?>"
+            placeholder="Введите дату в формате ДД.ММ.ГГГГ"
+        >
     </div>
 
     <div class="form__row">
