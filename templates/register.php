@@ -28,7 +28,6 @@
 
         <?php
             $error_classname = (isset($errors['password'])) ? "form__input--error" : "";
-            $value = htmlspecialchars($form['password'] ?? "");
         ?>
 
         <input

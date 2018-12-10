@@ -2,6 +2,8 @@
 
 require_once('./bootstrap.php');
 
+check_auth();
+
 $active_project_id = $_GET['project_id'] ?? null;
 
 $projects = getAllProjects($user['id']);
@@ -104,9 +106,7 @@ $content = view(VIEWS_PATH . '/shared/content_with_sidebar.php', [
     ]
 ]);
 
-$full_page = view(VIEWS_PATH . 'shared/layout.php', [
-    'title' => 'Дела в порядке',
-    'is_guest' => !$user,
+$full_page = buildLayout([
     'has_sidebar' => (bool)$project_nav,
     'user' => $user,
     'content' => $content

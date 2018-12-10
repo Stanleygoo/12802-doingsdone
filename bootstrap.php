@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 define('ROOT_PATH', getcwd());
 define('VIEWS_PATH', ROOT_PATH . '/templates/');
 define('UPLOAD_DIR', ROOT_PATH . '/uploads/');
@@ -12,8 +14,4 @@ require_once(ROOT_PATH . '/data/tasks.php');
 require_once(ROOT_PATH . '/data/users.php');
 require_once(ROOT_PATH . '/project/functions.php');
 
-$user = [
-    'id' => 1,
-    'name' => 'Константин',
-    'avatar' => 'assets/img/user-pic.jpg'
-];
+$user = $_SESSION['user'] ?? null;

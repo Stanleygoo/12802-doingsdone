@@ -1,6 +1,6 @@
 <?php
 
-function view($name, $data) {
+function view($name, $data = []) {
     if (!file_exists($name)) {
         return '';
     };
