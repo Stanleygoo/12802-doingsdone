@@ -9,6 +9,7 @@ require_once(ROOT_PATH . '/core/db_tools.php');
 require_once(ROOT_PATH . '/core/validate.php');
 require_once(ROOT_PATH . '/data/projects.php');
 require_once(ROOT_PATH . '/data/tasks.php');
+require_once(ROOT_PATH . '/data/users.php');
 require_once(ROOT_PATH . '/project/functions.php');
 
 $user = [
