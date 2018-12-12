@@ -14,9 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             },
             'message' => 'E-mail введён некорректно'
         ],
-        'name' => [
-            'required' => true
-        ],
         'password' => [
             'required' => true
         ],
@@ -36,33 +33,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'message' => db_error()
             ]);
             return;
-        } elseif (count($existing_user) > 0) {
-            $errors['email'] = 'Пользователь с таким email уже существует';
-        }
-    }
-
-    if (count($errors) === 0) {
-        $user_for_register = [
-            'name' => $form['name'],
-            'email' => $form['email'],
-            'password' => password_hash($form['password'], PASSWORD_DEFAULT)
-        ];
-
-        $register_result = addUser($user_for_register);
-
-        if ($register_result !== false) {
-            header("Location: /index.php");
         } else {
-            echo view(VIEWS_PATH . '/shared/error.php', [
-                'status_code' => 500,
-                'message' => db_error()
-            ]);
-            return;
+            if (
+                (count($existing_user) === 0) ||
+                !password_verify($form['password'], $existing_user[0]['password'])
+            ) {
+                $errors['verify'] = 'Пользователя с такими данными не существует';
+            }
+            else {
+                $_SESSION['user'] = $existing_user[0];
+                header('Location: /index.php');
+                exit();
+            }
         }
     }
 }
 
-$register_form = view(VIEWS_PATH . 'register.php', [
+$auth_form = view(VIEWS_PATH . 'auth.php', [
     'errors' => $errors ?? [],
     'form' => $form ?? []
 ]);
@@ -72,7 +59,7 @@ $auth_side = view(VIEWS_PATH . '/partials/auth_side.php', []);
 $content = view(VIEWS_PATH . '/shared/content_with_sidebar.php', [
     'content' => [
         'side' => $auth_side,
-        'main' => $register_form
+        'main' => $auth_form
     ]
 ]);
 
@@ -83,3 +70,4 @@ $full_page = buildLayout([
 ]);
 
 echo $full_page;
+

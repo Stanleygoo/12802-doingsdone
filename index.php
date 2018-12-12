@@ -2,6 +2,8 @@
 
 require_once('./bootstrap.php');
 
+check_auth();
+
 // если параметр project_id присутствует, но не задан
 if (isset($_GET['project_id']) && empty($_GET['project_id'])) {
     http_response_code(404);
@@ -98,9 +100,7 @@ $content = view(VIEWS_PATH . '/shared/content_with_sidebar.php', [
     ]
 ]);
 
-$full_page = view(VIEWS_PATH . 'shared/layout.php', [
-    'title' => 'Дела в порядке',
-    'is_guest' => !$user,
+$full_page = buildLayout([
     'has_sidebar' => (bool)$project_nav,
     'user' => $user,
     'content' => $content

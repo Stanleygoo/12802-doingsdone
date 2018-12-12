@@ -1,6 +1,6 @@
 <?php
     $title = $title ?? 'Дела в порядке';
-    $is_guest = $is_guest ?? false;
+    $show_bg = $show_bg ?? false;
     $has_sidebar = $has_sidebar ?? false;
     $error_page = $error_page ?? false;
 ?>
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="icon" href="assets/img/favicon.png">
 </head>
-<body class="<?= $is_guest ? 'body-background' : '' ?>">
+<body class="<?= $show_bg ? 'body-background' : '' ?>">
     <h1 class="visually-hidden">Дела в порядке</h1>
 
     <div class="page-wrapper">
@@ -32,17 +32,17 @@
 
                             <div class="main-header__side-item user-menu">
                                 <div class="user-menu__image">
-                                    <img src="<?= $user['avatar']; ?>" width="40" height="40" alt="Пользователь">
+                                    <img src="assets/img/user-pic.jpg" width="40" height="40" alt="Пользователь">
                                 </div>
 
                                 <div class="user-menu__data">
                                     <p><?= $user['name']; ?></p>
-                                    <a href="#">Выйти</a>
+                                    <a href="/logout.php">Выйти</a>
                                 </div>
                             </div>
                         <?php else: ?>
                             <a class="main-header__side-item button button--transparent"
-                            href="form-authorization.html">Войти</a>
+                            href="/auth.php">Войти</a>
                         <?php endif ?>
                     </div>
                 <?php endif; ?>

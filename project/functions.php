@@ -41,3 +41,21 @@ function fill_done_task($tasks) {
         return $task;
     }, $tasks);
 }
+
+function check_auth() {
+    if (!isset($_SESSION['user'])) {
+        header('Location: /guest.php');
+        exit();
+    }
+}
+
+function buildLayout($data) {
+    return view(VIEWS_PATH . 'shared/layout.php', [
+        'content' => $data['content'],
+        'title' => $data['title'] ?? 'Дела в порядке',
+        'show_bg' => $data['show_bg'] ?? false,
+        'has_sidebar' => $data['has_sidebar'] ?? false,
+        'user' => $data['user'],
+        'error_page' => $data['error_page'] ?? false
+    ]);
+}

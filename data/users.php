@@ -4,9 +4,9 @@ require_once(ROOT_PATH . '/core/db_tools.php');
 
 function getUserByEmail($user_email) {
     $user_sql = "
-        SELECT `id`, `name`, `email`
-        FROM users
-        WHERE email = ?
+        SELECT `id`, `name`, `email`, `password`
+        FROM `users`
+        WHERE `email` = ?
     ";
 
     return db_fetch_data($user_sql, [$user_email]);
