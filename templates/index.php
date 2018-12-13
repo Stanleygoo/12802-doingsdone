@@ -8,10 +8,18 @@
 
 <div class="tasks-controls">
     <nav class="tasks-switch">
-        <a href="/" class="tasks-switch__item tasks-switch__item--active">Все задачи</a>
-        <a href="/" class="tasks-switch__item">Повестка дня</a>
-        <a href="/" class="tasks-switch__item">Завтра</a>
-        <a href="/" class="tasks-switch__item">Просроченные</a>
+        <?php foreach($filters as $filter): ?>
+            <a
+                href="<?= $filter['url']; ?>"
+                class="
+                    tasks-switch__item
+                    <?php if($filter['is_active']): ?>tasks-switch__item--active<?php endif; ?>
+                "
+            >
+                <?= $filter['name']; ?>
+            </a>
+
+        <?php endforeach; ?>
     </nav>
 
     <label class="checkbox">

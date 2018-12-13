@@ -6,7 +6,12 @@
 ">
     <td class="task__select">
         <label class="checkbox task__checkbox">
-            <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
+            <input
+                class="checkbox__input visually-hidden task__checkbox"
+                type="checkbox"
+                <?php if($task['is_done']):?>checked<?php endif ?>
+                value="<?= $task['id']; ?>"
+            >
             <span class="checkbox__text">
                 <?= strip_tags($task['name'], '<i><b><ul><ol><li><br><h1><h2><h3><h4><h5><h6><p>'); ?>
             </span>

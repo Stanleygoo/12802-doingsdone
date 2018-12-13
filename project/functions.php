@@ -21,8 +21,9 @@ function is_important_task($task) {
     $hours_in_day = 24;
     $seconds_in_hour = 3600;
     $current_time = time();
+    $diff = $deadline - $current_time;
     return $deadline
-        ? floor(($deadline - $current_time) / $seconds_in_hour) <= $hours_in_day
+        ? $diff >= 0 && floor($diff / $seconds_in_hour) <= $hours_in_day
         : false;
 }
 
@@ -58,4 +59,35 @@ function buildLayout($data) {
         'user' => $data['user'],
         'error_page' => $data['error_page'] ?? false
     ]);
+}
+
+function buildTaskFilter($activeFilter, $active_project_id, $show_completed_tasks = 0) {
+    $filters = [
+        [
+            'name' => 'Все задачи',
+            'filterName' => null
+        ],
+        [
+            'name' => 'Повестка дня',
+            'filterName' => 'today'
+        ],
+        [
+            'name' => 'Завтра',
+            'filterName' => 'tomorrow'
+        ],
+        [
+            'name' => 'Просроченные',
+            'filterName' => 'expired'
+        ]
+    ];
+
+    return array_map(function($filter) use($activeFilter, $active_project_id, $show_completed_tasks) {
+        $filter['url'] = 'index.php?' . http_build_query([
+            'project_id' => $active_project_id,
+            'filter' => $filter['filterName'],
+            'show_completed' => $show_completed_tasks
+        ]);
+        $filter['is_active'] = $activeFilter === $filter['filterName'];
+        return $filter;
+    }, $filters);
 }

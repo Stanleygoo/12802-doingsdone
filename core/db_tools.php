@@ -63,3 +63,16 @@ function db_insert_data($sql, $data = []) {
         ? mysqli_insert_id($connection)
         : false;
 }
+
+function db_update_data($sql, $data = []) {
+    $connection = db_connect();
+
+    if (!$connection) {
+        return false;
+    };
+
+    $stmt = db_get_prepare_stmt($connection, $sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+
+    return $result;
+}
