@@ -12,15 +12,44 @@ function getAllTasks($user_id) {
     return db_fetch_data($tasks_list_sql, [$user_id]);
 }
 
-function getTasksByProject($user_id, $project_id) {
-    $tasks_list_sql = "
+function getTasks($user_id, $project_id, $filterName = null) {
+    $filters = [
+        'today' => '
+            AND `deadline` >= CURDATE()
+            AND `deadline` < CURDATE() + INTERVAL 1 DAY
+        ',
+        'tomorrow' => '
+            AND `deadline` >= CURDATE() + INTERVAL 1 DAY
+            AND `deadline` < CURDATE() + INTERVAL 2 DAY
+        ',
+        'expired' => '
+            AND `deadline` < CURDATE()
+            AND `status` = "0"
+        '
+    ];
+
+    $filter_sql = $filters[$filterName] ?? '';
+
+    $base_sql = "
         SELECT *
         FROM `tasks`
         WHERE `author_id` = ?
         AND `project_id` = ?
     ";
 
-    return db_fetch_data($tasks_list_sql, [$user_id, $project_id]);
+    $result_sql = $base_sql . $filter_sql;
+
+    return db_fetch_data($result_sql, [$user_id, $project_id]);
+}
+
+function toggleTask($task_id, $value) {
+    $toggle_sql = "
+        UPDATE `tasks`
+        SET `status` = ?
+        WHERE `id` = ?
+    ";
+
+    return db_update_data($toggle_sql, [$value, $task_id]);
 }
 
 function addTask($task) {

@@ -15,6 +15,7 @@ if (isset($_GET['project_id']) && empty($_GET['project_id'])) {
 }
 
 $active_project_id = $_GET['project_id'] ?? null;
+$activeFilter = $_GET['filter'] ?? null;
 
 // показывать или нет выполненные задачи
 $show_complete_tasks = isset($_GET['show_completed'])
@@ -55,7 +56,11 @@ if ($active_project_id) {
         return;
     };
 
-    $tasks = getTasksByProject($user['id'], $active_project_id);
+    $tasks = getTasks(
+        $user['id'],
+        $active_project_id,
+        $activeFilter
+    );
 } else {
     // ищем задачи всех проектов
     $tasks = getAllTasks($user['id']);
@@ -70,6 +75,34 @@ if ($tasks === false) {
     return;
 }
 
+if (isset($_GET['task_id']) && isset($_GET['check'])) {
+    $task_id = $_GET['task_id'] ?? null;
+    $check_task = $_GET['check'] ?? null;
+
+    $is_task_exist = count(array_filter($tasks, function($task) use($task_id) {
+        return (int)$task['id'] === (int)$task_id;
+    })) > 0;
+
+    if ($is_task_exist) {
+        $toggle_result = toggleTask($task_id, $check_task);
+
+        if ($toggle_result === false) {
+            http_response_code(500);
+            echo view(VIEWS_PATH . '/shared/error.php', [
+                'status_code' => 500,
+                'message' => db_error()
+            ]);
+        } else {
+            $script_name = pathinfo(__FILE__, PATHINFO_BASENAME);
+            $query_params = $_GET;
+            unset($query_params['task_id']);
+            unset($query_params['check']);
+            $redirect_url = '/' . $script_name . '?' . http_build_query($query_params);
+            header("Location: $redirect_url");
+        }
+    }
+}
+
 $visible_tasks = count($tasks) === 0
     ? $tasks
     : tasks_filter(
@@ -81,12 +114,19 @@ $projects = fill_projects_data(
     $projects,
     $active_project_id,
     $_GET,
-    pathinfo(__FILE__, PATHINFO_BASENAME)
+    'index.php'
+);
+
+$taskFilters = buildTaskFilter(
+    $activeFilter,
+    $active_project_id,
+    $show_complete_tasks
 );
 
 $index_content = view(VIEWS_PATH . 'index.php', [
     'show_complete_tasks' => $show_complete_tasks,
-    'visible_tasks' => $visible_tasks
+    'visible_tasks' => $visible_tasks,
+    'filters' => $taskFilters
 ]);
 
 $project_nav = view(VIEWS_PATH . '/partials/projects_nav.php', [

@@ -1,10 +1,3 @@
-<?php
-    $title = $title ?? 'Дела в порядке';
-    $show_bg = $show_bg ?? false;
-    $has_sidebar = $has_sidebar ?? false;
-    $error_page = $error_page ?? false;
-?>
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -28,7 +21,7 @@
                 <?php if(!$error_page): ?>
                     <div class="main-header__side">
                         <?php if(isset($user)): ?>
-                            <a class="main-header__side-item button button--plus open-modal" href="add.php">Добавить задачу</a>
+                            <a class="main-header__side-item button button--plus open-modal" href="task_add.php">Добавить задачу</a>
 
                             <div class="main-header__side-item user-menu">
                                 <div class="user-menu__image">
@@ -62,7 +55,7 @@
                 <p>Веб-приложение для удобного ведения списка дел.</p>
             </div>
 
-            <a class="main-footer__button button button--plus" href="add.php">Добавить задачу</a>
+            <a class="main-footer__button button button--plus" href="task_add.php">Добавить задачу</a>
 
             <div class="main-footer__social social">
                 <span class="visually-hidden">Мы в соцсетях:</span>

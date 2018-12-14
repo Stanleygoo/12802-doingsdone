@@ -42,7 +42,10 @@ var $checkbox = document.getElementsByClassName('show_completed')[0];
 $checkbox.addEventListener('change', function (event) {
   var is_checked = +event.target.checked;
 
-  window.location = '/index.php?show_completed=' + is_checked;
+  var searchParams = new URLSearchParams(window.location.search.slice(1));
+  searchParams.set('show_completed', is_checked);
+
+  window.location = '/index.php?' + searchParams;
 });
 
 var $taskCheckboxes = document.getElementsByClassName('tasks')[0];
@@ -54,8 +57,11 @@ $taskCheckboxes.addEventListener('change', function (event) {
     var is_checked = +el.checked;
     var task_id = el.getAttribute('value');
 
-    var url = '/index.php?task_id=' + task_id + '&check=' + is_checked;
-    window.location = url;
+    var searchParams = new URLSearchParams(window.location.search.slice(1));
+    searchParams.set('task_id', task_id);
+    searchParams.set('check', is_checked);
+
+    window.location = '/index.php?' + searchParams;
   }
 });
 

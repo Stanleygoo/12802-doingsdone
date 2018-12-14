@@ -1,8 +1,16 @@
 -- Добавление пользователей
 INSERT INTO `users` (`name`, `email`, `password`)
 VALUES
-  ('Иван Петров', 'ivan.petrov@company.com', '0123456789'),
-  ('Александр Константинопольский', 'petr.ivanov@company.com', 'password');
+  (
+    'Иван Петров',
+    'ivan.petrov@company.com',
+    '$2y$10$JUlXQmtyW6BmpNIEOQfZz.1gw1.XY08CFbq2zo.q8htJ4zzs8F4Te'
+  ),
+  (
+    'Александр Константинопольский',
+    'petr.ivanov@company.com',
+    '$2y$10$JUlXQmtyW6BmpNIEOQfZz.1gw1.XY08CFbq2zo.q8htJ4zzs8F4Te'
+  );
 
 -- Добавление проектов
 INSERT INTO `projects` (`name`, `author_id`)

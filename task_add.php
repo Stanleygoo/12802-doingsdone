@@ -21,7 +21,7 @@ $projects = fill_projects_data(
     $projects,
     $active_project_id,
     $_GET,
-    pathinfo(__FILE__, PATHINFO_BASENAME)
+    'index.php'
 );
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-$add_content = view(VIEWS_PATH . 'task-add.php', [
+$add_content = view(VIEWS_PATH . 'task_add.php', [
     'projects' => $projects,
     'task' => $task_form_data ?? [],
     'errors' => $validate_result['errors'] ?? []
