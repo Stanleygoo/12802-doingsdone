@@ -1,7 +1,24 @@
 <h2 class="content__main-heading">Список задач</h2>
 
-<form class="search-form" action="index.php" method="post">
-    <input class="search-form__input" type="text" name="" value="" placeholder="Поиск по задачам">
+<form class="search-form" action="index.php" method="get">
+    <?php $query_text = htmlspecialchars($search_query ?? ""); ?>
+
+    <?php foreach ($_GET as $key => $value): ?>
+        <?php if ($key !== 'query'): ?>
+            <input
+                type="hidden"
+                name="<?= htmlspecialchars($key); ?>"
+                value="<?= htmlspecialchars($value); ?>"
+            />
+        <?php endif; ?>
+    <?php endforeach; ?>
+    <input
+        class="search-form__input"
+        type="text"
+        name="query"
+        value="<?= $query_text; ?>"
+        placeholder="Поиск по задачам"
+    >
 
     <input class="search-form__submit" type="submit" name="" value="Искать">
 </form>
@@ -32,8 +49,13 @@
     </label>
 </div>
 
-<table class="tasks">
-    <?php foreach ($visible_tasks as $task): ?>
-        <?= view(VIEWS_PATH . 'partials/task.php', ['task' => $task]); ?>
-    <?php endforeach ?>
-</table>
+<?php if($has_no_results): ?>
+    <p>Ничего не найдено по вашему запросу</p>
+<?php else: ?>
+    <table class="tasks">
+        <?php foreach ($visible_tasks as $task): ?>
+            <?= view(VIEWS_PATH . 'partials/task.php', ['task' => $task]); ?>
+        <?php endforeach ?>
+    </table>
+<?php endif; ?>
+

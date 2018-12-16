@@ -2,17 +2,12 @@
 
 require_once(ROOT_PATH . '/core/db_tools.php');
 
-function getAllTasks($user_id) {
-    $tasks_list_sql = "
-        SELECT *
-        FROM `tasks`
-        WHERE `author_id` = ?
-    ";
-
-    return db_fetch_data($tasks_list_sql, [$user_id]);
-}
-
-function getTasks($user_id, $project_id, $filterName = null) {
+function getTasks(
+    $user_id,
+    $project_id = null,
+    $filterName = null,
+    $search_query = null
+) {
     $filters = [
         'today' => '
             AND `deadline` >= CURDATE()
@@ -28,18 +23,21 @@ function getTasks($user_id, $project_id, $filterName = null) {
         '
     ];
 
-    $filter_sql = $filters[$filterName] ?? '';
-
-    $base_sql = "
+    $sql = "
         SELECT *
         FROM `tasks`
         WHERE `author_id` = ?
-        AND `project_id` = ?
     ";
 
-    $result_sql = $base_sql . $filter_sql;
+    $sql .= ($project_id ? ' AND `project_id` = ?' : '');
+    $sql .= ($search_query ? ' AND MATCH(`name`) AGAINST(? IN BOOLEAN MODE)' : '');
+    $sql .= ($filters[$filterName] ?? '');
 
-    return db_fetch_data($result_sql, [$user_id, $project_id]);
+    return db_fetch_data($sql, array_merge(
+        [$user_id],
+        $project_id ? [$project_id] : [],
+        $search_query ? [$search_query] : []
+    ));
 }
 
 function toggleTask($task_id, $value) {
