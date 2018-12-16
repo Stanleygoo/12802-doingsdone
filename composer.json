@@ -1,0 +1,13 @@
+{
+    "name": "monochromer/doingsdone",
+    "type": "project",
+    "authors": [
+        {
+            "name": "monochromer",
+            "email": "monochromer@mail.ru"
+        }
+    ],
+    "require": {
+        "swiftmailer/swiftmailer": "^6.1"
+    }
+}

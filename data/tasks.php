@@ -117,3 +117,20 @@ function addTask($task) {
 
     return db_insert_data($add_task_sql, $task_data);
 }
+
+function getExpiredTasks() {
+    $sql = "
+        SELECT
+            tasks.name as task_name,
+            tasks.deadline,
+            users.id as user_id,
+            users.name as user_name,
+            users.email as user_email
+        FROM tasks
+        JOIN users ON users.id = tasks.author_id
+        WHERE deadline >= NOW()
+        AND deadline < DATE_ADD(NOW(), INTERVAL 1 HOUR)
+    ";
+
+    return db_fetch_data($sql);
+}
