@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($validate_result) {
         $user_email = $form['email'];
-        $existing_user = getUserByEmail($user_email);
+        $existing_user = get_user_by_email($user_email);
         if ($existing_user === false) {
             echo view(VIEWS_PATH . '/shared/error.php', [
                 'status_code' => 500,
@@ -63,7 +63,7 @@ $content = view(VIEWS_PATH . '/shared/content_with_sidebar.php', [
     ]
 ]);
 
-$full_page = buildLayout([
+$full_page = build_layout([
     'has_sidebar' => (bool)$auth_side,
     'user' => $user,
     'content' => $content

@@ -6,7 +6,7 @@ check_auth();
 
 $active_project_id = $_GET['project_id'] ?? null;
 
-$projects = getAllProjects($user['id']);
+$projects = get_all_projects($user['id']);
 
 if ($projects === false) {
     http_response_code(500);
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($validate_result['result']) {
         $task_form_data['author_id'] = $user['id'];
 
-        $add_result = addTask($task_form_data);
+        $add_result = add_task($task_form_data);
         if ($add_result !== false) {
             $redirect_url = '/index.php?' . http_build_query([
                 'project_id' => $task_form_data['project']
@@ -106,7 +106,7 @@ $content = view(VIEWS_PATH . '/shared/content_with_sidebar.php', [
     ]
 ]);
 
-$full_page = buildLayout([
+$full_page = build_layout([
     'has_sidebar' => (bool)$project_nav,
     'user' => $user,
     'content' => $content

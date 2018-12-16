@@ -4,7 +4,7 @@ require_once('./bootstrap.php');
 
 $email_config = require(ROOT_PATH . '/config/email.php');
 
-$expired_tasks = getExpiredTasks();
+$expired_tasks = get_expired_tasks();
 if ($expired_tasks === false) {
     print(db_error());
     exit();

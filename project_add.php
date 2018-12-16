@@ -6,7 +6,7 @@ check_auth();
 
 $active_project_id = $_GET['project_id'] ?? null;
 
-$projects = getAllProjects($user['id']);
+$projects = get_all_projects($user['id']);
 
 if ($projects === false) {
     http_response_code(500);
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (count($errors) === 0) {
-        $add_project_id = addProject($form['name'], $user['id']);
+        $add_project_id = add_project($form['name'], $user['id']);
         if ($add_project_id === false) {
             http_response_code(500);
             echo view(VIEWS_PATH . '/shared/error.php', [
@@ -84,7 +84,7 @@ $content = view(VIEWS_PATH . '/shared/content_with_sidebar.php', [
     ]
 ]);
 
-$full_page = buildLayout([
+$full_page = build_layout([
     'has_sidebar' => (bool)$project_nav,
     'user' => $user,
     'content' => $content
