@@ -2,6 +2,10 @@
 
 require_once('mysql_helper.php');
 
+/**
+ * Выполняет подключение к базе данных
+ * @return (mysqli|bool) ресурс подключения в случае успешного подключения к базе данных или false в случае неудачного подключения
+ */
 function db_connect() {
     static $connection;
 
@@ -24,6 +28,10 @@ function db_connect() {
 }
 
 
+/**
+ * Возвращает последнюю ошибку, связанную с базой данных
+ * @return string строка с описанием последней ошибки
+ */
 function db_error() {
     $connection = db_connect();
     return mysqli_connect_errno()
@@ -31,7 +39,13 @@ function db_error() {
         : mysqli_error($connection);
 }
 
-
+/**
+ * Функция для получения данных из БД
+ * @param string $sql SQL-запрос с плейсхолдерами вместо значений
+ * @param array $data данные для вставки на место плейсхолдеров
+ *
+ * @return (mixed|bool) результат выборки или false в случае неудачной операции
+ */
 function db_fetch_data($sql, $data = []) {
     $connection = db_connect();
 
@@ -49,6 +63,13 @@ function db_fetch_data($sql, $data = []) {
 }
 
 
+/**
+ * Функция для вставки данных в БД
+ * @param string $sql SQL-запрос с плейсхолдерами вместо значений
+ * @param array $data данные для вставки на место плейсхолдеров
+ *
+ * @return (int|bool) id добавленной записи или false в случае неудачной операции
+ */
 function db_insert_data($sql, $data = []) {
     $connection = db_connect();
 
@@ -64,6 +85,14 @@ function db_insert_data($sql, $data = []) {
         : false;
 }
 
+
+/**
+ * Функция для обновления данных в БД
+ * @param string $sql SQL-запрос с плейсхолдерами вместо значений
+ * @param array $data данные для вставки на место плейсхолдеров
+ *
+ * @return (bool) успешность операции
+ */
 function db_update_data($sql, $data = []) {
     $connection = db_connect();
 

@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($validate_result) {
         $user_email = $form['email'];
-        $existing_user = getUserByEmail($user_email);
+        $existing_user = get_user_by_email($user_email);
         if ($existing_user === false) {
             echo view(VIEWS_PATH . '/shared/error.php', [
                 'status_code' => 500,
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'password' => password_hash($form['password'], PASSWORD_DEFAULT)
         ];
 
-        $register_result = addUser($user_for_register);
+        $register_result = add_user($user_for_register);
 
         if ($register_result !== false) {
             header("Location: /index.php");
@@ -76,7 +76,7 @@ $content = view(VIEWS_PATH . '/shared/content_with_sidebar.php', [
     ]
 ]);
 
-$full_page = buildLayout([
+$full_page = build_layout([
     'has_sidebar' => (bool)$auth_side,
     'user' => $user,
     'content' => $content

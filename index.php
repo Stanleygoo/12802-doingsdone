@@ -15,14 +15,14 @@ if (isset($_GET['project_id']) && empty($_GET['project_id'])) {
 }
 
 $active_project_id = $_GET['project_id'] ?? null;
-$activeFilter = $_GET['filter'] ?? null;
+$active_filter = $_GET['filter'] ?? null;
 
 // показывать или нет выполненные задачи
 $show_complete_tasks = isset($_GET['show_completed'])
     ? intval($_GET['show_completed'])
     : 0;
 
-$projects = getAllProjects($user['id']);
+$projects = get_all_projects($user['id']);
 if ($projects === false) {
     http_response_code(500);
     echo view(VIEWS_PATH . '/shared/error.php', [
@@ -41,7 +41,7 @@ if (isset($_GET['query'])) {
 
 // ищем задачи одного проекта
 if ($active_project_id) {
-    $current_project = getProjectById($user['id'], $active_project_id);
+    $current_project = get_project_by_id($user['id'], $active_project_id);
 
     if ($current_project === false) {
         http_response_code(500);
@@ -65,7 +65,7 @@ if ($active_project_id) {
         $user['id'],
         $params = [
             'project_id' => $active_project_id,
-            'filter_name' => $activeFilter,
+            'filter_name' => $active_filter,
             'search_query' => $search_query
         ]
     );
@@ -74,7 +74,7 @@ if ($active_project_id) {
     $tasks = get_tasks(
         $user['id'],
         $params = [
-            'filter_name' => $activeFilter,
+            'filter_name' => $active_filter,
             'search_query' => $search_query
         ]
     );
@@ -98,7 +98,7 @@ if (isset($_GET['task_id']) && isset($_GET['check'])) {
     })) > 0;
 
     if ($is_task_exist) {
-        $toggle_result = toggleTask($task_id, $check_task);
+        $toggle_result = toggle_task($task_id, $check_task);
 
         if ($toggle_result === false) {
             http_response_code(500);
@@ -119,7 +119,7 @@ if (isset($_GET['task_id']) && isset($_GET['check'])) {
 
 $visible_tasks = count($tasks) === 0
     ? $tasks
-    : tasks_filter(
+    : filter_completed_tasks(
         fill_done_task(fill_important_task($tasks)),
         $show_complete_tasks
     );
@@ -131,8 +131,8 @@ $projects = fill_projects_data(
     'index.php'
 );
 
-$taskFilters = buildTaskFilter(
-    $activeFilter,
+$taskFilters = build_task_filter(
+    $active_filter,
     $active_project_id,
     $show_complete_tasks,
     $search_query
@@ -158,7 +158,7 @@ $content = view(VIEWS_PATH . '/shared/content_with_sidebar.php', [
     ]
 ]);
 
-$full_page = buildLayout([
+$full_page = build_layout([
     'has_sidebar' => (bool)$project_nav,
     'user' => $user,
     'content' => $content

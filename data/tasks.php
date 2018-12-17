@@ -26,6 +26,12 @@ function add_search_condition() {
     return 'MATCH(`name`) AGAINST(? IN BOOLEAN MODE)';
 }
 
+/**
+ * Функция для получения данных о задачах
+ * @param int $user_id id пользователя
+ * @param array $params дополнительные параметры фильтрации
+ * @return (mixed|bool) результат выборки или false в случае неудачной операции
+ */
 function get_tasks($user_id, $params = []) {
     $sql = "
         SELECT *
@@ -60,17 +66,32 @@ function get_tasks($user_id, $params = []) {
     return db_fetch_data($sql, $bind_data);
 }
 
-function toggleTask($task_id, $value) {
+
+/**
+ * Функция для смена состояния выполненности задачи
+ * @param int $task_id id задачи
+ * @param int $status статус выполненности задачи (0 | 1)
+ *
+ * @return bool успешность операции
+ */
+function toggle_task($task_id, $status) {
     $toggle_sql = "
         UPDATE `tasks`
         SET `status` = ?
         WHERE `id` = ?
     ";
 
-    return db_update_data($toggle_sql, [$value, $task_id]);
+    return db_update_data($toggle_sql, [$status, $task_id]);
 }
 
-function addTask($task) {
+
+/**
+ * Функция для добавления задачи в БД
+ * @param array $task данные задачи
+ *
+ * @return (int|bool) id добавленной записи или false в случае неудачной операции
+ */
+function add_task($task) {
     $names_map = [
         'name' => [
             'column' => 'name',
@@ -116,4 +137,26 @@ function addTask($task) {
     ";
 
     return db_insert_data($add_task_sql, $task_data);
+}
+
+/**
+ * Функция для получения задач, срок которых истекает в течение текущего часа
+ *
+ * @return (mixed|bool) результат выборки или false в случае неудачной операции
+ */
+function get_expired_tasks() {
+    $sql = "
+        SELECT
+            tasks.name as task_name,
+            tasks.deadline,
+            users.id as user_id,
+            users.name as user_name,
+            users.email as user_email
+        FROM tasks
+        JOIN users ON users.id = tasks.author_id
+        WHERE deadline >= NOW()
+        AND deadline < DATE_ADD(NOW(), INTERVAL 1 HOUR)
+    ";
+
+    return db_fetch_data($sql);
 }

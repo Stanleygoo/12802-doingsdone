@@ -54,7 +54,7 @@
 
         <input
             class="form__input <?= $error_classname ?>"
-            type="password"
+            type="text"
             name="name"
             id="name"
             value="<?= $value; ?>"
