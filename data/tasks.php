@@ -2,42 +2,62 @@
 
 require_once(ROOT_PATH . '/core/db_tools.php');
 
-function getTasks(
-    $user_id,
-    $project_id = null,
-    $filterName = null,
-    $search_query = null
-) {
+function add_filter_condition($filter_name) {
     $filters = [
         'today' => '
-            AND `deadline` >= CURDATE()
-            AND `deadline` < CURDATE() + INTERVAL 1 DAY
+            `deadline` >= CURDATE() AND `deadline` < CURDATE() + INTERVAL 1 DAY
         ',
         'tomorrow' => '
-            AND `deadline` >= CURDATE() + INTERVAL 1 DAY
-            AND `deadline` < CURDATE() + INTERVAL 2 DAY
+            `deadline` >= CURDATE() + INTERVAL 1 DAY AND `deadline` < CURDATE() + INTERVAL 2 DAY
         ',
         'expired' => '
-            AND `deadline` < CURDATE()
-            AND `status` = "0"
+            `deadline` < CURDATE() AND `status` = "0"
         '
     ];
 
+    return $filters[$filter_name] ?? '';
+}
+
+function add_project_condition() {
+    return '`project_id` = ?';
+}
+
+function add_search_condition() {
+    return 'MATCH(`name`) AGAINST(? IN BOOLEAN MODE)';
+}
+
+function get_tasks($user_id, $params = []) {
     $sql = "
         SELECT *
         FROM `tasks`
         WHERE `author_id` = ?
     ";
 
-    $sql .= ($project_id ? ' AND `project_id` = ?' : '');
-    $sql .= ($search_query ? ' AND MATCH(`name`) AGAINST(? IN BOOLEAN MODE)' : '');
-    $sql .= ($filters[$filterName] ?? '');
+    $where = [];
 
-    return db_fetch_data($sql, array_merge(
+    if (($params['project_id'] ?? null)) {
+        $where[] = add_project_condition();
+    }
+
+    if (($params['search_query'] ?? null)) {
+        $where[] = add_search_condition();
+    }
+
+    if (($params['filter_name'] ?? null)) {
+        $where[] = add_filter_condition($params['filter_name']);
+    }
+
+    $sql .= count($where) > 0
+        ? ' AND ' . implode(' AND ', $where)
+        : '';
+
+    $bind_data = array_merge(
         [$user_id],
-        $project_id ? [$project_id] : [],
-        $search_query ? [$search_query] : []
-    ));
+        (($params['project_id'] ?? null)) ? [$params['project_id']] : [],
+        (($params['search_query'] ?? null)) ? [$params['search_query']] : []
+    );
+
+    return db_fetch_data($sql, $bind_data);
 }
 
 function toggleTask($task_id, $value) {

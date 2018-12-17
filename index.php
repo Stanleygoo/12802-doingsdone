@@ -61,19 +61,22 @@ if ($active_project_id) {
         return;
     };
 
-    $tasks = getTasks(
+    $tasks = get_tasks(
         $user['id'],
-        $active_project_id,
-        $activeFilter,
-        $search_query
+        $params = [
+            'project_id' => $active_project_id,
+            'filter_name' => $activeFilter,
+            'search_query' => $search_query
+        ]
     );
 } else {
     // ищем задачи всех проектов
-    $tasks = getTasks(
+    $tasks = get_tasks(
         $user['id'],
-        null,
-        $activeFilter,
-        $search_query
+        $params = [
+            'filter_name' => $activeFilter,
+            'search_query' => $search_query
+        ]
     );
 };
 
