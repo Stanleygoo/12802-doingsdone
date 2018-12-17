@@ -140,7 +140,8 @@ $index_content = view(VIEWS_PATH . 'index.php', [
     'visible_tasks' => $visible_tasks,
     'filters' => $taskFilters,
     'search_query' => $search_query,
-    'has_no_results' => strlen($search_query) > 0 && count($visible_tasks) === 0
+    'has_no_results' => strlen($search_query) > 0 && count($visible_tasks) === 0,
+    'query_params' => $_GET
 ]);
 
 $project_nav = view(VIEWS_PATH . '/partials/projects_nav.php', [

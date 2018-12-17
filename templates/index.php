@@ -3,7 +3,7 @@
 <form class="search-form" action="index.php" method="get">
     <?php $query_text = htmlspecialchars($search_query ?? ""); ?>
 
-    <?php foreach ($_GET as $key => $value): ?>
+    <?php foreach ($query_params as $key => $value): ?>
         <?php if ($key !== 'query'): ?>
             <input
                 type="hidden"
