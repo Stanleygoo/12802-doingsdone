@@ -2,6 +2,12 @@
 
 require_once(ROOT_PATH . '/core/db_tools.php');
 
+/**
+ * Добавляет sql-запрос для фильтрации задач по датам и завершенности
+ * @param string $filter_name имя фильтра
+ *
+ * @return string sql с фильтрацией
+ */
 function add_filter_condition($filter_name) {
     $filters = [
         'today' => '
@@ -18,13 +24,26 @@ function add_filter_condition($filter_name) {
     return $filters[$filter_name] ?? '';
 }
 
+
+/**
+ * Добавляет sql-запрос для фильтрации задач по id проекта
+ *
+ * @return string sql с фильтрацией
+ */
 function add_project_condition() {
     return '`project_id` = ?';
 }
 
+
+/**
+ * Добавляет sql-запрос для полнотекстового поиска
+ *
+ * @return string sql с фильтрацией
+ */
 function add_search_condition() {
     return 'MATCH(`name`) AGAINST(? IN BOOLEAN MODE)';
 }
+
 
 /**
  * Функция для получения данных о задачах
