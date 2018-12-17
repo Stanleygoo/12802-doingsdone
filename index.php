@@ -32,7 +32,12 @@ if ($projects === false) {
     return;
 };
 
-$tasks;
+if (isset($_GET['query'])) {
+    $search_query = trim($_GET['query']);
+    $search_query = strlen($search_query) > 0 ? $search_query : null;
+} else {
+    $search_query = null;
+}
 
 // ищем задачи одного проекта
 if ($active_project_id) {
@@ -56,14 +61,23 @@ if ($active_project_id) {
         return;
     };
 
-    $tasks = getTasks(
+    $tasks = get_tasks(
         $user['id'],
-        $active_project_id,
-        $activeFilter
+        $params = [
+            'project_id' => $active_project_id,
+            'filter_name' => $activeFilter,
+            'search_query' => $search_query
+        ]
     );
 } else {
     // ищем задачи всех проектов
-    $tasks = getAllTasks($user['id']);
+    $tasks = get_tasks(
+        $user['id'],
+        $params = [
+            'filter_name' => $activeFilter,
+            'search_query' => $search_query
+        ]
+    );
 };
 
 if ($tasks === false) {
@@ -120,13 +134,17 @@ $projects = fill_projects_data(
 $taskFilters = buildTaskFilter(
     $activeFilter,
     $active_project_id,
-    $show_complete_tasks
+    $show_complete_tasks,
+    $search_query
 );
 
 $index_content = view(VIEWS_PATH . 'index.php', [
     'show_complete_tasks' => $show_complete_tasks,
     'visible_tasks' => $visible_tasks,
-    'filters' => $taskFilters
+    'filters' => $taskFilters,
+    'search_query' => $search_query,
+    'has_no_results' => strlen($search_query) > 0 && count($visible_tasks) === 0,
+    'query_params' => $_GET
 ]);
 
 $project_nav = view(VIEWS_PATH . '/partials/projects_nav.php', [

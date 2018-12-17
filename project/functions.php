@@ -61,7 +61,12 @@ function buildLayout($data) {
     ]);
 }
 
-function buildTaskFilter($activeFilter, $active_project_id, $show_completed_tasks = 0) {
+function buildTaskFilter(
+    $activeFilter,
+    $active_project_id,
+    $show_completed_tasks = 0,
+    $search_query = null
+) {
     $filters = [
         [
             'name' => 'Все задачи',
@@ -81,11 +86,12 @@ function buildTaskFilter($activeFilter, $active_project_id, $show_completed_task
         ]
     ];
 
-    return array_map(function($filter) use($activeFilter, $active_project_id, $show_completed_tasks) {
+    return array_map(function($filter) use($activeFilter, $active_project_id, $show_completed_tasks, $search_query) {
         $filter['url'] = 'index.php?' . http_build_query([
             'project_id' => $active_project_id,
             'filter' => $filter['filterName'],
-            'show_completed' => $show_completed_tasks
+            'show_completed' => $show_completed_tasks,
+            'query' => $search_query
         ]);
         $filter['is_active'] = $activeFilter === $filter['filterName'];
         return $filter;
