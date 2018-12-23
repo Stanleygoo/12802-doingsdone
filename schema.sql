@@ -43,7 +43,7 @@ CREATE TABLE `tasks` (
   `name` TEXT NOT NULL,
   `file` VARCHAR(1000),
   `author_id` INT(11) UNSIGNED,
-  `project_id` INT(11) UNSIGNED,   
+  `project_id` INT(11) UNSIGNED,
   CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `users`(`id`),
   CONSTRAINT `tasks_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `projects`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

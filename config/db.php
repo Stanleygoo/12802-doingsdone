@@ -1,9 +1,10 @@
 <?php
 
+$url = parse_url(getenv('CLEARDB_DATABASE_URL'));
+
 return [
-    'host' => 'localhost',
-    'user' => 'root',
-    'password' => 'root',
-    'port' => '8889',
-    'database' => 'doingsdone'
+    'host' => $url['host'],
+    'user' => $url['user'],
+    'password' => $url['pass'],
+    'database' => substr($url['path'], 1)
 ];
