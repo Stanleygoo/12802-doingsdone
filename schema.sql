@@ -25,7 +25,8 @@ DROP TABLE IF EXISTS `projects`;
 CREATE TABLE `projects` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` CHAR(255) NOT NULL,
-  `author_id` INT(11) UNSIGNED REFERENCES `users`(`id`)
+  `author_id` INT(11) UNSIGNED,
+   CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `users`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE UNIQUE INDEX `projects_name_index` ON `projects`(`author_id`, `name`);
@@ -41,8 +42,10 @@ CREATE TABLE `tasks` (
   `status` ENUM('0', '1') DEFAULT '0',
   `name` TEXT NOT NULL,
   `file` VARCHAR(1000),
-  `author_id` INT(11) UNSIGNED REFERENCES `users`(`id`) ,
-  `project_id` INT(11) UNSIGNED REFERENCES `projects`(`id`)
+  `author_id` INT(11) UNSIGNED,
+  `project_id` INT(11) UNSIGNED,   
+  CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `users`(`id`),
+  CONSTRAINT `tasks_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `projects`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE INDEX `tasks_deadline_index` ON `tasks`(`deadline`);
