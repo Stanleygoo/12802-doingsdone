@@ -52,10 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ],
         'date' => [
             'validator' => function($data) {
-                list($y, $m, $d) = explode('-', $data);
-                return checkdate($m, $d, $y);
+                return date_create_from_format('Y-m-d H:i', $data) !== false;
             },
-            'message' => 'Cрок выполнения должен быть датой в формате «ДД.ММ.ГГГГ»'
+            'message' => 'Cрок выполнения должен быть датой в формате «ДД.ММ.ГГГГ ЧЧ:ММ»'
         ]
     ];
 
@@ -82,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             echo view(VIEWS_PATH . '/shared/error.php', [
                 'status_code' => 500,
-                'message' => $add_result . db_error()
+                'message' => db_error()
             ]);
         }
         return;

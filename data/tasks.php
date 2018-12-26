@@ -118,7 +118,7 @@ function add_task($task) {
         ],
         'date' => [
             'column' => 'deadline',
-            'sql' => 'STR_TO_DATE(?, "%Y-%m-%d")'
+            'sql' => 'STR_TO_DATE(?, "%Y-%m-%d %H:%i")'
         ],
         'file' => [
             'column' => 'file',

@@ -1,5 +1,6 @@
 'use strict';
 
+/*
 var expandControls = document.querySelectorAll('.expand-control');
 
 var hidePopups = function () {
@@ -36,41 +37,53 @@ document.body.addEventListener('click', function (event) {
     document.body.classList.remove('overlay');
   }
 });
+*/
 
-var $checkbox = document.getElementsByClassName('show_completed')[0];
+(function() {
+  var $checkbox = document.getElementsByClassName('show_completed')[0];
+  if (!$checkbox) return;
 
-$checkbox.addEventListener('change', function (event) {
-  var is_checked = +event.target.checked;
-
-  var searchParams = new URLSearchParams(window.location.search.slice(1));
-  searchParams.set('show_completed', is_checked);
-
-  window.location = '/index.php?' + searchParams;
-});
-
-var $taskCheckboxes = document.getElementsByClassName('tasks')[0];
-
-$taskCheckboxes.addEventListener('change', function (event) {
-  if (event.target.classList.contains('task__checkbox')) {
-    var el = event.target;
-
-    var is_checked = +el.checked;
-    var task_id = el.getAttribute('value');
+  $checkbox.addEventListener('change', function (event) {
+    var is_checked = +event.target.checked;
 
     var searchParams = new URLSearchParams(window.location.search.slice(1));
-    searchParams.set('task_id', task_id);
-    searchParams.set('check', is_checked);
+    searchParams.set('show_completed', is_checked);
 
     window.location = '/index.php?' + searchParams;
-  }
-});
+  });
+})();
 
-flatpickr('#date', {
-  enableTime: true,
-  dateFormat: "Y-m-d H:i",
-  time_24hr: true,
-  locale: "ru"
-});
+(function() {
+  var $taskCheckboxes = document.getElementsByClassName('tasks')[0];
+  if (!$taskCheckboxes) return;
+
+  $taskCheckboxes.addEventListener('change', function (event) {
+    if (event.target.classList.contains('task__checkbox')) {
+      var el = event.target;
+
+      var is_checked = +el.checked;
+      var task_id = el.getAttribute('value');
+
+      var searchParams = new URLSearchParams(window.location.search.slice(1));
+      searchParams.set('task_id', task_id);
+      searchParams.set('check', is_checked);
+
+      window.location = '/index.php?' + searchParams;
+    }
+  });
+})();
+
+(function() {
+  var date_input = document.getElementById('date');
+  if (!date_input) return;
+
+  flatpickr(date_input, {
+    enableTime: true,
+    dateFormat: "Y-m-d H:i",
+    time_24hr: true,
+    locale: "ru"
+  });
+})();
 
 (function(m, e, t, r, i, k, a) {
   m[i] = m[i] || function() {

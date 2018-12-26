@@ -26,6 +26,6 @@
     </td>
 
     <td class="task__date">
-        <?= date_format(date_create($task['deadline']), 'd.m.Y') ?>
+        <?= date_format(date_create($task['deadline']), 'd.m.Y H:i') ?>
     </td>
 </tr>
