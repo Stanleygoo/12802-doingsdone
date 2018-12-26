@@ -41,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($validate_result) {
         $is_already_exist = count(array_filter($projects, function($project) use($form) {
-            print_r(mb_strtolower($form['name']));
             return mb_strtolower($project['name']) === mb_strtolower($form['name']);
         })) > 0;
 
@@ -60,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ]);
             return;
         } else {
-            $redirect_url = '/index.php?' . http_build_query([
+            $redirect_url = '/?' . http_build_query([
                 'project_id' => $add_project_id
             ]);
             header("Location: $redirect_url");
