@@ -1,5 +1,5 @@
 <?=
-    view(VIEWS_PATH . 'shared/layout.php', [
+    build_layout([
         'error_page' => true,
         'content' => "
             <div class='content__error'>
@@ -8,5 +8,5 @@
                 <a class='button button--transparent' href='/'>Перейти на главную</a>
             </div>
         "
-    ]);
+    ])
 ?>

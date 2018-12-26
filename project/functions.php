@@ -99,11 +99,11 @@ function check_auth() {
  */
 function build_layout($data) {
     return view(VIEWS_PATH . 'shared/layout.php', [
-        'content' => $data['content'],
+        'content' => $data['content'] ?? '',
         'title' => $data['title'] ?? 'Дела в порядке',
         'show_bg' => $data['show_bg'] ?? false,
         'has_sidebar' => $data['has_sidebar'] ?? false,
-        'user' => $data['user'],
+        'user' => $data['user'] ?? null,
         'error_page' => $data['error_page'] ?? false
     ]);
 }
