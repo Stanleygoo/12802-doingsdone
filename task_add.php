@@ -63,6 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_FILES['preview']['name'])) {
         $file_name = $_FILES['preview']['name'];
         $file_path = UPLOAD_DIR;
+        if (!file_exists($file_path)) {
+            mkdir($file_path, 0777, true);
+        }
         $new_file_name = time().uniqid(rand()) . '-' . $file_name;
         if (move_uploaded_file($_FILES['preview']['tmp_name'], $file_path . $new_file_name)) {
             $task_form_data['file'] = $new_file_name;
